@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap");
+
+$color-primary: #472d30;
+$color-secondary: #e26d5c;
+$color-purple: #723d46;
+$color-green: #c9cba3;
+$color-yellow: #ffe1a8;
+
+body {
+  margin: 0;
+  font-family: "Hind Siliguri", sans-serif;
+  background-color: $color-yellow;
+}
+
+a {
+  color: $color-secondary;
+  text-decoration: none;
+}
+
+button {
+  color: $color-green;
+  background-color: $color-primary;
+  border-radius: 5px;
+  border-style: none;
+  transition-duration: 300ms;
+  cursor: pointer;
+  &:hover {
+    background-color: $color-secondary;
+  }
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 40vw;
+  background-color: $color-primary;
+  height: 6rem;
+  img {
+    width: 7rem;
+  }
+  nav {
+    display: flex;
+    gap: 5rem;
+    a {
+      color: $color-yellow;
+      font-size: 1.3rem;
+    }
+  }
+}
+
+#best {
+  display: flex;
+  gap: 5rem;
+  margin-top: 2rem;
+  background-color: $color-green;
+  width: 100vw;
+  height: 60vh;
+  img {
+    padding: 5rem;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+// Modal
+
+#modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  background-color: rgba(0, 0, 0, 0.4);
+  & > div {
+    border: 3px solid $color-yellow;
+    border-radius: 5px;
+    background-color: $color-purple;
+    margin: auto;
+    margin-bottom: 30rem;
+    padding: 20px;
+    width: 80%;
+    color: $color-green;
+  }
+}
+
+.close {
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
