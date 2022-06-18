@@ -11,6 +11,7 @@ function best_movie() {
             document.querySelector("#best > img").src = json_result.image_url;
             document.querySelector("#best > div > h1").innerHTML = json_result.title;
             document.querySelector("#best > div > button").value = json_result.url;
+            show_best_movies(JSON.parse(httpClient.responseText));
         } else {
         alert('Il y a eu un problème avec la requête.');
         }
@@ -57,4 +58,23 @@ function view_modal(object) {
     console.log(object.value);
     http.open("GET", object.value);
     http.send();
+}
+
+function show_best_movies(movies) {
+    let ul = document.querySelector("body > section.carousel > ul")
+    for (i=0; i<7; i++) {
+        let li = document.createElement("li");
+        let img = document.createElement("img");
+        let title = document.createElement("h1");
+        let button = document.createElement("button");
+        img.src = movies.results[i].image_url;
+        title.innerHTML = movies.results[i].title;
+        button.value = movies.results[i].url;
+        button.setAttribute("onclick", "view_modal(this)");
+        button.innerHTML = "Voir le film";
+        li.appendChild(img);
+        li.appendChild(title);
+        li.appendChild(button);
+        ul.appendChild(li);
+    }
 }
