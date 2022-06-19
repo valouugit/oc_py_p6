@@ -1,22 +1,29 @@
 let httpClient = new XMLHttpRequest();
 let categories;
+let best_movies = [];
 
-httpClient.onreadystatechange = best_movie;
-httpClient.open("GET", "http://127.0.0.1:8000/api/v1/titles/?sort_by=-imdb_score");
-httpClient.send();
+get_best_movies();
+load_categories();
 
-function best_movie() {
-    if (httpClient.readyState === XMLHttpRequest.DONE) {
-        if (httpClient.status === 200) {
-            let json_result = JSON.parse(httpClient.responseText).results[0];
-            document.querySelector("#best > img").src = json_result.image_url;
-            document.querySelector("#best > div > h1").innerHTML = json_result.title;
-            document.querySelector("#best > div > button").value = json_result.url;
-            show_best_movies(JSON.parse(httpClient.responseText));
-            load_categories();
-        } else {
-        alert('Il y a eu un problème avec la requête.');
-        }
+function get_best_movies() {
+    for (i=1; i<3; i++) {
+        fetch("http://127.0.0.1:8000/api/v1/titles/?sort_by=-imdb_score&page=" + i)
+        .then(function(res) {
+            return res.json();
+        })
+        .then(function(json) {
+            json.results.forEach(movie => {
+                best_movies.push(movie)
+                if (document.querySelector("#bests > ul").childNodes.length < 7) {
+                    if (document.querySelector("#bests > ul").childNodes.length == 0) {
+                        document.querySelector("#best > img").src = movie.image_url;
+                        document.querySelector("#best > div > h1").innerHTML = movie.title;
+                        document.querySelector("#best > div > button").value = movie.url;
+                    }
+                    add_movie(movie, document.querySelector("#bests > ul"))
+                }
+            })
+        })
     }
 }
 
@@ -57,7 +64,6 @@ function view_modal(object) {
         }
         document.querySelector("#modal").style.display = "block";
     };
-    console.log(object.value);
     http.open("GET", object.value);
     http.send();
 }
@@ -113,7 +119,6 @@ function load_categories() {
             .then(function(json) {
                 json.results.forEach(movie => {
                     categorie.movies.push(movie)
-                    console.log(categorie.selector.childNodes)
                     if (categorie.selector.childNodes.length < 7) {
                         add_movie(movie, categorie.selector)
                     }

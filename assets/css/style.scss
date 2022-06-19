@@ -11,6 +11,7 @@ body {
   font-family: "Hind Siliguri", sans-serif;
   background-color: $color-yellow;
   overflow-x: hidden;
+  width: 100vw;
 }
 
 a {
@@ -25,7 +26,8 @@ button {
   border-style: none;
   transition-duration: 300ms;
   padding: 0.75rem;
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
   &:hover {
     background-color: $color-secondary;
@@ -106,6 +108,7 @@ section {
   & > h1 {
     padding-left: 5rem;
     padding-top: 2rem;
+    color: $color-primary;
   }
 }
 
@@ -116,7 +119,7 @@ section.carousel > ul {
   padding-left: 2rem;
   padding-right: 2rem;
   padding-bottom: 2rem;
-  min-width: 96.4vw;
+  min-width: 100vw;
   max-width: 100vw;
   display: flex;
   gap: 4rem;
@@ -129,6 +132,10 @@ section.carousel > ul {
     align-items: center;
     scroll-snap-align: center;
     list-style-type: none;
+    h1 {
+      font-size: 1.15rem;
+      font-weight: 500;
+    }
   }
 }
 
@@ -142,6 +149,6 @@ section.carousel > ul {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #3d4852;
+  background-color: $color-secondary;
   border-radius: 3px;
 }
