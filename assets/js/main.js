@@ -1,4 +1,5 @@
 let httpClient = new XMLHttpRequest();
+let categories;
 
 httpClient.onreadystatechange = best_movie;
 httpClient.open("GET", "http://127.0.0.1:8000/api/v1/titles/?sort_by=-imdb_score");
@@ -12,6 +13,7 @@ function best_movie() {
             document.querySelector("#best > div > h1").innerHTML = json_result.title;
             document.querySelector("#best > div > button").value = json_result.url;
             show_best_movies(JSON.parse(httpClient.responseText));
+            load_categories();
         } else {
         alert('Il y a eu un problème avec la requête.');
         }
@@ -62,19 +64,61 @@ function view_modal(object) {
 
 function show_best_movies(movies) {
     let ul = document.querySelector("body > section.carousel > ul")
-    for (i=0; i<7; i++) {
-        let li = document.createElement("li");
-        let img = document.createElement("img");
-        let title = document.createElement("h1");
-        let button = document.createElement("button");
-        img.src = movies.results[i].image_url;
-        title.innerHTML = movies.results[i].title;
-        button.value = movies.results[i].url;
-        button.setAttribute("onclick", "view_modal(this)");
-        button.innerHTML = "Voir le film";
-        li.appendChild(img);
-        li.appendChild(title);
-        li.appendChild(button);
-        ul.appendChild(li);
+    for (i=0; i<5; i++) {
+        add_movie(movies.results[i], ul);
     }
+}
+
+function add_movie(movie, selector) {
+    let li = document.createElement("li");
+    let img = document.createElement("img");
+    let title = document.createElement("h1");
+    let button = document.createElement("button");
+    img.src = movie.image_url;
+    img.alt = "Affiche de " + movie.title
+    title.innerHTML = movie.title;
+    button.value = movie.url;
+    button.setAttribute("onclick", "view_modal(this)");
+    button.innerHTML = "Voir le film";
+    li.appendChild(img);
+    li.appendChild(title);
+    li.appendChild(button);
+    selector.appendChild(li);
+}
+
+function load_categories() {
+    categories = [
+        {
+            "name": "action",
+            "selector": document.querySelector("#action > ul"),
+            "movies": []
+        },
+        {
+            "name": "horror",
+            "selector": document.querySelector("#horror > ul"),
+            "movies": []
+        },
+        {
+            "name": "war",
+            "selector": document.querySelector("#war > ul"),
+            "movies": []
+        }
+    ]
+    categories.forEach(categorie => {
+        for (i=1; i<3; i++) {
+            fetch("http://127.0.0.1:8000/api/v1/titles/?sort_by=-imdb_score&genre_contains=" + categorie.name + "&page=" + i)
+            .then(function(res) {
+                return res.json();
+            })
+            .then(function(json) {
+                json.results.forEach(movie => {
+                    categorie.movies.push(movie)
+                    console.log(categorie.selector.childNodes)
+                    if (categorie.selector.childNodes.length < 7) {
+                        add_movie(movie, categorie.selector)
+                    }
+                })
+            })
+        }
+    });
 }
